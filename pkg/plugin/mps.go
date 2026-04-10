@@ -24,7 +24,7 @@ import (
 	pluginapi "k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
 	spec "volcano.sh/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/cmd/mps-control-daemon/mps"
+	"volcano.sh/k8s-device-plugin/pkg/mps"
 	"volcano.sh/k8s-device-plugin/pkg/rm"
 )
 
