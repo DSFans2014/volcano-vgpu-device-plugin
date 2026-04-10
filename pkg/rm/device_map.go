@@ -25,7 +25,7 @@ import (
 	"k8s.io/klog/v2"
 	pluginapi "k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
 )
 
 type deviceMapBuilder struct {

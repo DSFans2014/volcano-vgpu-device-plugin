@@ -6,7 +6,7 @@ package rm
 import (
 	"sync"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
 )
 
 // Ensure, that ResourceManagerMock does implement ResourceManager.

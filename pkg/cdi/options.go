@@ -17,8 +17,8 @@
 package cdi
 
 import (
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/imex"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/imex"
 )
 
 // Option defines a function for passing options to the New() call

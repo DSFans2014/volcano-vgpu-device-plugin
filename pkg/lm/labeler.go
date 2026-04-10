@@ -19,9 +19,9 @@ package lm
 import (
 	"fmt"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/resource"
-	"github.com/NVIDIA/k8s-device-plugin/internal/vgpu"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/resource"
+	"volcano.sh/k8s-device-plugin/pkg/vgpu"
 )
 
 // Labeler defines an interface for generating labels

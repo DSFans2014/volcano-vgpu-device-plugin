@@ -17,7 +17,7 @@
 package mig
 
 import (
-	"github.com/NVIDIA/k8s-device-plugin/internal/resource"
+	"volcano.sh/k8s-device-plugin/pkg/resource"
 )
 
 // DeviceInfo stores information about all devices on the node

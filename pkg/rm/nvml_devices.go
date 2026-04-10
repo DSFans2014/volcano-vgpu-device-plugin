@@ -25,7 +25,7 @@ import (
 
 	"github.com/NVIDIA/go-nvml/pkg/nvml"
 
-	"github.com/NVIDIA/k8s-device-plugin/internal/mig"
+	"volcano.sh/k8s-device-plugin/pkg/mig"
 )
 
 const (

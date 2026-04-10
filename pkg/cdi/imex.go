@@ -22,7 +22,7 @@ import (
 	"github.com/NVIDIA/nvidia-container-toolkit/pkg/nvcdi"
 	"github.com/NVIDIA/nvidia-container-toolkit/pkg/nvcdi/spec"
 
-	"github.com/NVIDIA/k8s-device-plugin/internal/imex"
+	"volcano.sh/k8s-device-plugin/pkg/imex"
 )
 
 type imexChannelCDILib struct {

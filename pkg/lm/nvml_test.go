@@ -5,9 +5,9 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/resource"
-	rt "github.com/NVIDIA/k8s-device-plugin/internal/resource/testing"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/resource"
+	rt "volcano.sh/k8s-device-plugin/pkg/resource/testing"
 )
 
 func TestMigCapabilityLabeler(t *testing.T) {

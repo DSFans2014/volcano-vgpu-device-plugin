@@ -25,10 +25,10 @@ import (
 	"github.com/NVIDIA/go-nvml/pkg/nvml"
 	"k8s.io/klog/v2"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/cdi"
-	"github.com/NVIDIA/k8s-device-plugin/internal/imex"
-	"github.com/NVIDIA/k8s-device-plugin/internal/rm"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/cdi"
+	"volcano.sh/k8s-device-plugin/pkg/imex"
+	"volcano.sh/k8s-device-plugin/pkg/rm"
 )
 
 type options struct {

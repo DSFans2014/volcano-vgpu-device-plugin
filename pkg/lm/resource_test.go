@@ -21,8 +21,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	rt "github.com/NVIDIA/k8s-device-plugin/internal/resource/testing"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	rt "volcano.sh/k8s-device-plugin/pkg/resource/testing"
 )
 
 func TestGPUResourceLabeler(t *testing.T) {

@@ -1,4 +1,4 @@
-module github.com/NVIDIA/k8s-device-plugin
+module volcano.sh/k8s-device-plugin
 
 go 1.25.0
 

@@ -19,7 +19,7 @@ package rm
 import (
 	"fmt"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
 )
 
 const (

@@ -34,8 +34,8 @@ import (
 
 	"github.com/google/renameio"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/flags"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/flags"
 )
 
 // Outputer defines a mechanism to output labels.

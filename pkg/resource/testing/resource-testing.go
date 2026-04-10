@@ -19,7 +19,7 @@ package testing
 import (
 	"fmt"
 
-	"github.com/NVIDIA/k8s-device-plugin/internal/resource"
+	"volcano.sh/k8s-device-plugin/pkg/resource"
 )
 
 // DeviceMock provides an alias that allows for additional functions to be defined.

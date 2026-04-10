@@ -22,7 +22,7 @@ import (
 
 	"k8s.io/klog/v2"
 
-	"github.com/NVIDIA/k8s-device-plugin/internal/vgpu"
+	"volcano.sh/k8s-device-plugin/pkg/vgpu"
 )
 
 // vgpuLabeler manages VGPUs labels for the node

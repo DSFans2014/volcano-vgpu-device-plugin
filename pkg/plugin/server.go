@@ -29,10 +29,10 @@ import (
 
 	cdiapi "tags.cncf.io/container-device-interface/pkg/cdi"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/cdi"
-	"github.com/NVIDIA/k8s-device-plugin/internal/imex"
-	"github.com/NVIDIA/k8s-device-plugin/internal/rm"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/cdi"
+	"volcano.sh/k8s-device-plugin/pkg/imex"
+	"volcano.sh/k8s-device-plugin/pkg/rm"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"

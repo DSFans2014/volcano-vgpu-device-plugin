@@ -19,7 +19,7 @@ package resource
 import (
 	"fmt"
 
-	"github.com/NVIDIA/k8s-device-plugin/internal/cuda"
+	"volcano.sh/k8s-device-plugin/pkg/cuda"
 )
 
 type cudaDevice cuda.Device

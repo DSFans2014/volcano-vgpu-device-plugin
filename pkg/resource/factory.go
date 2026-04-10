@@ -24,7 +24,7 @@ import (
 	"github.com/NVIDIA/go-nvml/pkg/nvml"
 	"k8s.io/klog/v2"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
 )
 
 // NewManager is a factory method that creates a resource Manager based on the specified config.

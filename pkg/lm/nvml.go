@@ -26,8 +26,8 @@ import (
 
 	"github.com/NVIDIA/go-nvlib/pkg/nvpci"
 
-	spec "github.com/NVIDIA/k8s-device-plugin/api/config/v1"
-	"github.com/NVIDIA/k8s-device-plugin/internal/resource"
+	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/resource"
 )
 
 var errMPSSharingNotSupported = errors.New("MPS sharing is not supported")
