@@ -34,9 +34,11 @@ import (
 	pluginapi "k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
 
 	spec "volcano.sh/k8s-device-plugin/api/config/v1"
+	"volcano.sh/k8s-device-plugin/pkg/config"
 	"volcano.sh/k8s-device-plugin/pkg/info"
 	"volcano.sh/k8s-device-plugin/pkg/plugin"
 	"volcano.sh/k8s-device-plugin/pkg/rm"
+	"volcano.sh/k8s-device-plugin/pkg/util"
 	"volcano.sh/k8s-device-plugin/pkg/watch"
 )
 
@@ -180,6 +182,21 @@ func main() {
 			EnvVars:     []string{"CDI_FEATURE_FLAGS"},
 			Destination: &o.cdiFeatureFlags,
 		},
+		&cli.UintFlag{
+			Name:  "device-split-count",
+			Usage: "the number for NVIDIA device split",
+			Value: 2,
+		},
+		&cli.UintFlag{
+			Name:  "gpu-memory-factor",
+			Usage: "the default gpu memory block size is 1MB",
+			Value: 1,
+		},
+		&cli.Float64Flag{
+			Name:  "device-cores-scaling",
+			Usage: "the ratio for NVIDIA device cores scaling",
+			Value: 1.0,
+		},
 	}
 	o.flags = c.Flags
 
@@ -249,6 +266,20 @@ func loadConfig(c *cli.Context, flags []cli.Flag) (*spec.Config, error) {
 func start(c *cli.Context, o *options) error {
 	klog.InfoS(fmt.Sprintf("Starting %s", c.App.Name), "version", c.App.Version)
 
+	klog.Info("Loading NVML")
+	if nvret := config.Nvml().Init(); nvret != nvml.SUCCESS {
+		klog.Infof("Failed to initialize NVML: %v.", nvret)
+		klog.Infof("If this is a GPU node, did you set the docker default runtime to `nvidia`?")
+		klog.Infof("You can check the prerequisites at: https://github.com/NVIDIA/k8s-device-plugin#prerequisites")
+		klog.Infof("You can learn how to set the runtime at: https://github.com/NVIDIA/k8s-device-plugin#quick-start")
+		klog.Infof("If this is not a GPU node, you should set up a toleration or nodeSelector to only deploy this plugin on GPU nodes")
+		if c.Bool("fail-on-init-error") {
+			return fmt.Errorf("failed to initialize NVML: %v", nvret)
+		}
+		select {}
+	}
+	defer func() { klog.Info("Shutdown of NVML returned:", config.Nvml().Shutdown()) }()
+
 	kubeletSocketDir := filepath.Dir(o.kubeletSocket)
 	klog.Infof("Starting FS watcher for %v", kubeletSocketDir)
 	watcher, err := watch.Files(kubeletSocketDir)
@@ -259,6 +290,8 @@ func start(c *cli.Context, o *options) error {
 
 	klog.Info("Starting OS watcher.")
 	sigs := watch.Signals(syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
+
+	util.LoadNvidiaConfig(c)
 
 	var started bool
 	var restartTimeout <-chan time.Time
