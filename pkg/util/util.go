@@ -687,6 +687,7 @@ func CreateSpecFile(outputPath string) error {
 	args := []string{
 		"cdi",
 		"generate",
+		"--vendor", "k8s.device-plugin.nvidia.com",
 		"--output", outputPath,
 	}
 
@@ -699,29 +700,6 @@ func CreateSpecFile(outputPath string) error {
 
 	if _, err := os.Stat(outputPath); err != nil {
 		return fmt.Errorf("spec file was not created at %s: %v", outputPath, err)
-	}
-	return nil
-}
-
-func ModifySpecKind(filePath, kind string) error {
-	data, err := os.ReadFile(filePath)
-	if err != nil {
-		return fmt.Errorf("fail to read file: %v", err)
-	}
-	var spec specs.Spec
-	if err := json.Unmarshal(data, &spec); err != nil {
-		return fmt.Errorf("fail to parse json: %v", err)
-	}
-	if spec.Kind == kind {
-		return nil
-	}
-	spec.Kind = kind
-	newData, err := json.MarshalIndent(spec, "", "  ")
-	if err != nil {
-		return fmt.Errorf("fail to marshal modified spec: %v", err)
-	}
-	if err := os.WriteFile(filePath, newData, 0644); err != nil {
-		return fmt.Errorf("fail to write modified spec: %v", err)
 	}
 	return nil
 }

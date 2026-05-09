@@ -849,9 +849,6 @@ func (plugin *nvidiaDevicePlugin) GetContainerDeviceStrArray(c util.ContainerDev
 						} else {
 							klog.Infof("createSpecFile ok. file path %s", specFilePath)
 						}
-						if err := util.ModifySpecKind(specFilePath, kind); err != nil {
-							klog.Warningf("failed to modify CDI spec file: %v", err)
-						}
 						if err := util.CheckCDISpecFile(specFilePath, kind); err != nil {
 							klog.Warningf("check CDI spec file failed. %v", err)
 							if i == maxTryTimes-1 {
