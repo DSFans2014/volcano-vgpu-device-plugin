@@ -24,28 +24,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-go@v2
+    - uses: actions/checkout@v4
       with:
-        go-version: "^1.19.x"
-    - name: Checkout submodule
-      uses: Mushus/checkout-submodule@v1.0.1
+        submodules: true
+    - name: Install Go
+      uses: actions/setup-go@v5
       with:
-        submodulePath: libvgpu
+        go-version-file: go.mod
     - run: go version
-    - name: Get branch name
-      uses: nelonoel/branch-name@v1.0.1
+    - name: Get tag name
+      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
     - name: Docker Login
-      uses: docker/login-action@v2.1.0
+      uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_TOKEN }}
         password: ${{ secrets.DOCKERHUB_PASSWD }}
     - name: Set up Docker Buildx
       id: buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v3
     - name: Generating image tag
       id: runtime-tag
       run: |
         echo tag="$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-    - run: BUILD_PLATFORMS="linux/amd64,linux/arm64" VERSION="${BRANCH_NAME}" make push-short
-    - run: BUILD_PLATFORMS="linux/amd64,linux/arm64" VERSION="${BRANCH_NAME}-${{ steps.runtime-tag.outputs.tag }}" make push-latest
+    - run: BUILD_PLATFORMS="linux/amd64,linux/arm64" VERSION="${RELEASE_VERSION}" make push-short
+    - run: BUILD_PLATFORMS="linux/amd64,linux/arm64" VERSION="${RELEASE_VERSION}-${{ steps.runtime-tag.outputs.tag }}" make push-latest
