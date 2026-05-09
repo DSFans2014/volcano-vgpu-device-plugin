@@ -833,6 +833,36 @@ func (plugin *nvidiaDevicePlugin) GetContainerDeviceStrArray(c util.ContainerDev
 			position, needsreset = plugin.GenerateMigTemplate(devtype, devindex, val)
 			if needsreset {
 				plugin.ApplyMigTemplate()
+				if plugin.deviceListStrategies.Includes(spec.DeviceListStrategyVolumeMounts) ||
+					plugin.deviceListStrategies.Includes(spec.DeviceListStrategyCDIAnnotations) ||
+					plugin.deviceListStrategies.Includes(spec.DeviceListStrategyCDICRI) {
+					klog.V(3).Infoln("generate CDI spec file")
+					const (
+						maxTryTimes      = 5
+						waitTimeInterval = 5 * time.Second
+						specFilePath     = "/var/run/cdi/k8s.device-plugin.nvidia.com-gpu.json"
+						kind             = "k8s.device-plugin.nvidia.com/gpu"
+					)
+					for i := 0; i < maxTryTimes; i++ {
+						if err := util.CreateSpecFile(specFilePath); err != nil {
+							klog.Warningf("failed to create CDI spec file: %v", err)
+						} else {
+							klog.Infof("createSpecFile ok. file path %s", specFilePath)
+						}
+						if err := util.CheckCDISpecFile(specFilePath, kind); err != nil {
+							klog.Warningf("check CDI spec file failed. %v", err)
+							if i == maxTryTimes-1 {
+								klog.Fatalf("exceed the max trytime %d", maxTryTimes)
+							} else {
+								time.Sleep(waitTimeInterval)
+								klog.Warningf("try to create CDI spec file again. try times: %d", i)
+								continue
+							}
+						}
+						klog.Infof("check CDI spec file ok")
+						break
+					}
+				}
 			}
 			tmp = append(tmp, util.GetMigUUIDFromIndex(val.UUID, position))
 		}
