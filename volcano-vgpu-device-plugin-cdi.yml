@@ -82,24 +82,24 @@ data:
           - group: "group1" 
             geometries: 
             - name: 1g.10gb
-              memory: 10240
+              memory: 9728
               count: 7
           - group: "group2"
             geometries: 
             - name: 2g.20gb
-              memory: 20480
+              memory: 19968
               count: 3
             - name: 1g.10gb
-              memory: 10240
+              memory: 9728
               count: 1
           - group: "group3"
             geometries: 
             - name: 3g.40gb
-              memory: 40960
+              memory: 40192
               count: 2
           - group: "group4"
             geometries: 
-            - name: 7g.79gb
+            - name: 7g.80gb
               memory: 80896
               count: 1
 ---
