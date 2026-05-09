@@ -82,24 +82,24 @@ data:
           - group: "group1" 
             geometries: 
             - name: 1g.10gb
-              memory: 10240
+              memory: 9728
               count: 7
           - group: "group2"
             geometries: 
             - name: 2g.20gb
-              memory: 20480
+              memory: 19968
               count: 3
             - name: 1g.10gb
-              memory: 10240
+              memory: 9728
               count: 1
           - group: "group3"
             geometries: 
             - name: 3g.40gb
-              memory: 40960
+              memory: 40192
               count: 2
           - group: "group4"
             geometries: 
-            - name: 7g.79gb
+            - name: 7g.80gb
               memory: 80896
               count: 1
 ---
@@ -201,7 +201,7 @@ spec:
       priorityClassName: "system-node-critical"
       serviceAccount: volcano-device-plugin
       containers:
-      - image: harbor-contest.4pd.io/denglong/volcano-vgpu-device-plugin:v1.12.0
+      - image: docker.io/projecthami/volcano-vgpu-device-plugin:v1.12.0
         imagePullPolicy: Always
         args: 
           - --device-split-count=10
@@ -252,13 +252,15 @@ spec:
           mountPath: /usr/local/vgpu
         - name: hosttmp
           mountPath: /tmp
+        - name: cdi-root
+          mountPath: /var/run/cdi
         - name: driver-root
           mountPath: /driver-root
           readOnly: true
         - name: usrbin
           mountPath: /usrbin
           readOnly: true
-      - image: harbor-contest.4pd.io/denglong/volcano-vgpu-device-plugin:v1.11.0
+      - image: docker.io/projecthami/volcano-vgpu-device-plugin:v1.12.0
         name: monitor
         command:
         - /bin/bash
@@ -332,3 +334,7 @@ spec:
         hostPath:
           path: /
           type: Directory
+      - name: cdi-root
+        hostPath:
+          path: /var/run/cdi
+          type: DirectoryOrCreate
