@@ -229,7 +229,7 @@ spec:
         - name: NVIDIA_DRIVER_ROOT
           value: /
         - name: NVIDIA_CDI_HOOK_PATH
-          value: /usr/bin/nvidia-ctk
+          value: /usrbin/nvidia-ctk
         - name: GDRCOPY_ENABLED
           value: "false"
         - name: GDS_ENABLED
@@ -254,6 +254,9 @@ spec:
           mountPath: /tmp
         - name: driver-root
           mountPath: /driver-root
+          readOnly: true
+        - name: usrbin
+          mountPath: /usrbin
           readOnly: true
       - image: harbor-contest.4pd.io/denglong/volcano-vgpu-device-plugin:v1.11.0
         name: monitor

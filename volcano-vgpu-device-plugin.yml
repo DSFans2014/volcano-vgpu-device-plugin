@@ -293,10 +293,6 @@ spec:
         hostPath:
           path: /run/containerd
           type: DirectoryOrCreate
-      - name: usrbin
-        hostPath:
-          path: /usr/bin
-          type: Directory
       - name: sysinfo
         hostPath:
           path: /sys

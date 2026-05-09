@@ -25,6 +25,7 @@ import (
 	"math"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -36,6 +37,7 @@ import (
 	k8stypes "k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
 	pluginapi "k8s.io/kubelet/pkg/apis/deviceplugin/v1beta1"
+	"tags.cncf.io/container-device-interface/specs-go"
 	"volcano.sh/k8s-device-plugin/pkg/config"
 	"volcano.sh/k8s-device-plugin/pkg/util/client"
 	"volcano.sh/k8s-device-plugin/pkg/util/nodelock"
@@ -632,6 +634,94 @@ func readFromConfigFile(sConfig *config.NvidiaConfig) error {
 			}
 			klog.Infof("FilterDevice: %v", val.FilterDevice)
 		}
+	}
+	return nil
+}
+
+func CheckCDISpecFile(filePath, kind string) error {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return fmt.Errorf("fail to read file: %v", err)
+	}
+	var spec specs.Spec
+	if err := json.Unmarshal(data, &spec); err != nil {
+		return fmt.Errorf("fail to parse json: %v", err)
+	}
+	return checkCDISpec(spec, kind)
+}
+
+func checkCDISpec(spec specs.Spec, kind string) error {
+	if spec.Kind != kind {
+		return fmt.Errorf("kind mismatch. current: %s, expect: %s", spec.Kind, kind)
+	}
+	for _, device := range spec.Devices {
+		if strings.HasPrefix(device.Name, "MIG") {
+			if len(device.ContainerEdits.DeviceNodes) == 0 {
+				return fmt.Errorf("MIG device %s has no deviceNodes", device.Name)
+			}
+			containCap := false
+			for _, node := range device.ContainerEdits.DeviceNodes {
+				if strings.Contains(node.Path, "nvidia-cap") {
+					containCap = true
+					break
+				}
+			}
+			if !containCap {
+				return fmt.Errorf("MIG device %s does not have a corresponding nvidia-cap device", device.Name)
+			}
+		}
+	}
+	return nil
+}
+
+func CreateSpecFile(outputPath string) error {
+	nvidiaCtkPath := "/usrbin/nvidia-ctk"
+	if outputPath == "" {
+		outputPath = "/var/run/cdi/k8s.device-plugin.nvidia.com-gpu.json"
+	}
+	outputDir := filepath.Dir(outputPath)
+	if err := os.MkdirAll(outputDir, 0755); err != nil {
+		return fmt.Errorf("failed to create output directory %s: %v", outputDir, err)
+	}
+
+	args := []string{
+		"cdi",
+		"generate",
+		"--output", outputPath,
+	}
+
+	cmd := exec.Command(nvidiaCtkPath, args...)
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("failed to generate CDI spec file: %v\ncommand: nvidia-ctk %v\noutput: %s",
+			err, args, string(output))
+	}
+
+	if _, err := os.Stat(outputPath); err != nil {
+		return fmt.Errorf("spec file was not created at %s: %v", outputPath, err)
+	}
+	return nil
+}
+
+func ModifySpecKind(filePath, kind string) error {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return fmt.Errorf("fail to read file: %v", err)
+	}
+	var spec specs.Spec
+	if err := json.Unmarshal(data, &spec); err != nil {
+		return fmt.Errorf("fail to parse json: %v", err)
+	}
+	if spec.Kind == kind {
+		return nil
+	}
+	spec.Kind = kind
+	newData, err := json.MarshalIndent(spec, "", "  ")
+	if err != nil {
+		return fmt.Errorf("fail to marshal modified spec: %v", err)
+	}
+	if err := os.WriteFile(filePath, newData, 0644); err != nil {
+		return fmt.Errorf("fail to write modified spec: %v", err)
 	}
 	return nil
 }
