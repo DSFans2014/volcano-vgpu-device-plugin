@@ -14,9 +14,6 @@ monitor:
     tag: v1.11.0
     pullPolicy: IfNotPresent
 
-# Device plugin arguments
-deviceSplitCount: 10
-
 # Device configuration (volcano-vgpu-device-config)
 deviceConfig:
   nvidia:
@@ -127,14 +124,6 @@ daemonset:
   # - key: volcano.sh/gpu-memory
   #   operator: Exists
   #   effect: NoSchedule
-  
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 50m
-      memory: 64Mi
 
 # Host paths
 hostPaths:
