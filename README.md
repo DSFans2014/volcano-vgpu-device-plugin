@@ -140,11 +140,11 @@ you can then enable GPU support in your cluster by deploying the following Daemo
 #### Normal Mode
 
 ```
-$ kubectl apply -f volcano-vgpu-device-plugin.yml
+$ kubectl apply -f deployments/static/volcano-vgpu-device-plugin.yml
 ```
 #### CDI Mode
 ```
-$ kubectl apply -f volcano-vgpu-device-plugin-cdi.yml
+$ kubectl apply -f deployments/static/volcano-vgpu-device-plugin-cdi.yml
 ```
 
 ### Verify environment is ready
