@@ -152,5 +152,5 @@ tolerations:
 cdi:
   enabled: false
   deviceListStrategy: "cdi-annotations"
-  nvidiaHookPath: "/usrbin/nvidia-ctk"
+  nvidiaHookPath: "/usr/bin/nvidia-ctk"
   nvidiaDriverRoot: "/"
