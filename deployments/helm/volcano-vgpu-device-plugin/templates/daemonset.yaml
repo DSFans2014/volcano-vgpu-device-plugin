@@ -111,9 +111,9 @@ spec:
         imagePullPolicy: {{ .Values.monitor.image.pullPolicy }}
         env:
         - name: NVIDIA_VISIBLE_DEVICES
-          value: {{ .Values.env.NVIDIA_VISIBLE_DEVICES | quote }}
+          value: "all"
         - name: NVIDIA_MIG_MONITOR_DEVICES
-          value: {{ .Values.env.NVIDIA_MIG_MONITOR_DEVICES | quote }}
+          value: "all"
         - name: HOOK_PATH
           value: "/tmp/vgpu"
         - name: NODE_NAME
