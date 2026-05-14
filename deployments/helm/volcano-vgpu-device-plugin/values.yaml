@@ -135,12 +135,6 @@ hostPaths:
   sys: /sys
   var: /var
 
-# Environment variables
-env:
-  gdrcopyEnabled: null
-  gdsEnabled: null
-  mofedEnabled: null
-
 # Node selector
 nodeSelector: {}
 

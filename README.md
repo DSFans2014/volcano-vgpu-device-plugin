@@ -151,7 +151,13 @@ $ kubectl apply -f deployments/static/volcano-vgpu-device-plugin.yml
 - name: NVIDIA_DRIVER_ROOT
   value: /
 - name: NVIDIA_CDI_HOOK_PATH
-  value: /usrbin/nvidia-ctk
+  value: /usr/bin/nvidia-ctk
+- name: GDRCOPY_ENABLED
+  value: "false"
+- name: GDS_ENABLED
+  value: "false"
+- name: MOFED_ENABLED
+  value: "false"
 ```
 2. Add the following configuration to the `volumeMounts` section of the `volcano-device-plugin` container.
 ```
@@ -160,16 +166,9 @@ $ kubectl apply -f deployments/static/volcano-vgpu-device-plugin.yml
 - name: driver-root
   mountPath: /driver-root
   readOnly: true
-- name: usrbin
-  mountPath: /usrbin
-  readOnly: true
 ```
 3. Add the following configuration to the `volumes` section.
 ```
-- name: usrbin
-  hostPath:
-    path: /usr/bin
-    type: Directory
 - name: driver-root
   hostPath:
     path: /
