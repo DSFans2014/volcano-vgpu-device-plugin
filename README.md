@@ -166,6 +166,9 @@ $ kubectl apply -f deployments/static/volcano-vgpu-device-plugin.yml
 - name: driver-root
   mountPath: /driver-root
   readOnly: true
+- name: usrbin
+  mountPath: /usrbin
+  readOnly: true
 ```
 3. Add the following configuration to the `volumes` section.
 ```
@@ -177,6 +180,10 @@ $ kubectl apply -f deployments/static/volcano-vgpu-device-plugin.yml
   hostPath:
     path: /var/run/cdi
     type: DirectoryOrCreate
+- name: usrbin
+  hostPath:
+    path: /usr/bin
+    type: Directory
 ```
 ##### Deploy
 ```

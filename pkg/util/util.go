@@ -689,6 +689,7 @@ func checkCDISpec(spec specs.Spec, kind string) error {
 }
 
 func CreateSpecFile(outputPath string) error {
+	nvidiaCtkPath := "/usrbin/nvidia-ctk"
 	if outputPath == "" {
 		outputPath = "/var/run/cdi/k8s.device-plugin.nvidia.com-gpu.json"
 	}
@@ -704,7 +705,7 @@ func CreateSpecFile(outputPath string) error {
 		"--output", outputPath,
 	}
 
-	cmd := exec.Command("nvidia-ctk", args...)
+	cmd := exec.Command(nvidiaCtkPath, args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return fmt.Errorf("failed to generate CDI spec file: %v\ncommand: nvidia-ctk %v\noutput: %s",
