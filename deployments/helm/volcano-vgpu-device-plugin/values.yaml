@@ -11,7 +11,7 @@ monitor:
   enabled: true
   image:
     repository: docker.io/projecthami/volcano-vgpu-device-plugin
-    tag: v1.11.0
+    tag: v1.12.0
     pullPolicy: IfNotPresent
 
 # Device configuration (volcano-vgpu-device-config)
@@ -137,9 +137,9 @@ hostPaths:
 
 # Environment variables
 env:
-  NVIDIA_VISIBLE_DEVICES: "all"
-  NVIDIA_MIG_MONITOR_DEVICES: "all"
-  NVIDIA_DRIVER_CAPABILITIES: "utility"
+  gdrcopyEnabled: null
+  gdsEnabled: null
+  mofedEnabled: null
 
 # Node selector
 nodeSelector: {}
@@ -149,5 +149,14 @@ affinity: {}
 
 # Tolerations for the pod
 tolerations:
-  - key: CriticalAddonsOnly
-    operator: Exists
+- key: CriticalAddonsOnly
+  operator: Exists
+- key: volcano.sh/gpu-memory
+  operator: Exists
+  effect: NoSchedule
+
+cdi:
+  enabled: false
+  deviceListStrategy: "cdi-annotations"
+  nvidiaHookPath: "/usrbin/nvidia-ctk"
+  nvidiaDriverRoot: "/"

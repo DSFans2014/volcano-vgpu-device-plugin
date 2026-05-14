@@ -198,7 +198,7 @@ spec:
       # be rescheduled after a failure.
       # See https://kubernetes.io/docs/tasks/administer-cluster/guaranteed-scheduling-critical-addon-pods/
       priorityClassName: "system-node-critical"
-      serviceAccount: volcano-device-plugin
+      serviceAccountName: volcano-device-plugin
       containers:
       - image: docker.io/projecthami/volcano-vgpu-device-plugin:v1.12.0
         lifecycle:
@@ -234,7 +234,7 @@ spec:
           mountPath: /usr/local/vgpu
         - name: hosttmp
           mountPath: /tmp
-      - image: docker.io/projecthami/volcano-vgpu-device-plugin:v1.11.0
+      - image: docker.io/projecthami/volcano-vgpu-device-plugin:v1.12.0
         name: monitor
         command:
         - /bin/bash
